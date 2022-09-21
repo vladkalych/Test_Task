@@ -1,0 +1,33 @@
+version: '3'
+services:
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: db
+    ports:
+      - "33066:3306"
+    networks:
+      - mt-network
+
+  test-task:
+    container_name: test-task-container
+    image: test-task-image
+    build: .
+    environment:
+      MYSQL_ADDRESS: mysqldb
+      MYSQL_PORT: 3306
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: 12345678
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysqldb
+    networks:
+      - mt-network
+
+networks:
+  mt-network:
+    driver: bridge
+

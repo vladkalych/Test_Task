@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Магазин</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<form action="#" th:action="@{/shop/add}" th:method="get" >
+    <input type="hidden" name="_method" value="get" />
+    <button type="submit" id="addButton">Add</button>
+</form>
+<table>
+    <thead>
+    <tr>
+        <th> Name </th>
+        <th> Address </th>
+        <th> Price </th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--/*@thymesVar id="products" type="java.util.List<com.test_task.entity.Product>"*/-->
+    <tr th:if="${products.isEmpty()}">
+        <td colspan="2"> No shops Available </td>
+    </tr>
+    <tr th:each="product : ${products}">
+        <td><span th:text="${product.getName()}"> Name </span></td>
+        <td><span th:text="${product.getDescription()}"> Address </span></td>
+        <td><span th:text="${product.getPrice()}"> Price </span></td>
+        <!--/*@thymesVar id="product" type="com.test_task.entity.Product"*/-->
+        <td>
+            <form action="#" th:action="@{'/shop/edit/' + ${product.id}}" th:method="get" >
+                <input type="hidden" name="_method" value="get" />
+                <button type="submit" id="editButton">Edit</button>
+            </form>
+        </td>
+        <td>
+            <form action="#" th:action="@{'/shop/delete/' + ${product.id}}" th:method="delete" >
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit" id="deleteButton">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

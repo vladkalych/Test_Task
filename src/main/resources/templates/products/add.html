@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add</title>
+</head>
+<body>
+<!--/*@thymesVar id="product" type="com.test_task.entity.Product"*/-->
+<form th:action="@{/shop/add}" th:object="${product}" method="post">
+    <fieldset>
+        <input type="submit" id="submitButton" th:value="Save">
+        <input type="reset" id="resetButton" name="reset" th:value="Reset"/>
+        <table>
+            <thead>
+            <tr>
+                <th> Name</th>
+                <th> Address</th>
+                <th> Price</th>
+            </tr>
+            </thead>
+            <tbody>
+                <td>
+                <input  th:field="*{name}" /></td>
+                <td><input th:field="*{description}" /></td>
+                <td><input th:field="*{price}" /></td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+</form>
+</body>
+</html>
