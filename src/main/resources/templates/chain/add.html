@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Add</title>
 </head>
 <body>
-$END$
+<!--/*@thymesVar id="shop" type="com.test_task.entity.Shop"*/-->
+<form th:action="@{/chain/add}" th:object="${shop}" method="post">
+    <fieldset>
+        <button type="submit" id="submitButton"> Save </button>
+        <button type="reset" id="resetButton" name="reset"> Reset </button>
+        <button type="button" id="backButton" onclick="history.back()"> Back</button>
+        <table>
+            <thead>
+            <tr>
+                <th> Name</th>
+                <th> Address</th>
+            </tr>
+            </thead>
+            <tbody>
+                <td>
+                    <input th:field="*{name}"/>
+                    <p th:if="${#fields.hasErrors('name')}">Invalid name</p>
+                </td>
+                <td>
+                    <input th:field="*{address}"/>
+                    <p th:if="${#fields.hasErrors('address')}">Invalid address</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+</form>
 </body>
 </html>

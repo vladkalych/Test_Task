@@ -3,11 +3,13 @@ services:
   mysqldb:
     container_name: mysqldb
     image: mysql
+    hostname: mysqldb
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 12345678
       MYSQL_DATABASE: db
     ports:
-      - "33066:3306"
+      - "3307:3306"
     networks:
       - mt-network
 
@@ -15,6 +17,9 @@ services:
     container_name: test-task-container
     image: test-task-image
     build: .
+    links:
+      - mysqldb:db
+    restart: on-failure
     environment:
       MYSQL_ADDRESS: mysqldb
       MYSQL_PORT: 3306
@@ -22,10 +27,10 @@ services:
       MYSQL_PASSWORD: 12345678
     ports:
       - "8080:8080"
-    depends_on:
-      - mysqldb
     networks:
       - mt-network
+    depends_on:
+      - mysqldb
 
 networks:
   mt-network:

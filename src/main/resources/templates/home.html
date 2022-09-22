@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>Spring Example</title>
 </head>
 <body>
-$END$
+<form>
+    <div sec:authorize="isAuthenticated()">
+    </div>
+    <ul>
+        <h1> Welcome <b><span sec:authentication="name">Username</span></b>&nbsp;</h1>
+        <li><a href="/chain/shops">Мережа магазинів</a></li>
+        <li><a href="/logout">Вийти</a></li>
+    </ul>
+</form>
 </body>
 </html>

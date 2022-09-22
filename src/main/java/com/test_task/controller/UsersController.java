@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/users")
-public class Users {
+public class UsersController {
 
     @PostMapping("/add")
     public String users(@PathVariable("username") String username, @PathVariable("password") String password){

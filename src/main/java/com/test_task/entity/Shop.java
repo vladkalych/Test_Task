@@ -1,6 +1,5 @@
 package com.test_task.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,10 +9,9 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
-@Table(name = "store")
-@Data
+@Table(name = "shop")
 @NoArgsConstructor
-public class Store {
+public class Shop {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +29,8 @@ public class Store {
     @Size(min = 20, message = "Мінімум 20 символів")
     private String address;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "store")
+    @Transient
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "shop")
     @Setter
     @Getter
     private Set<Product> products;

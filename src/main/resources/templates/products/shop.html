@@ -1,15 +1,19 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <title>Магазин</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<form action="#" th:action="@{/shop/add}" th:method="get" >
-    <input type="hidden" name="_method" value="get" />
-    <button type="submit" id="addButton">Add</button>
-</form>
-<table>
+<a href="/chain/shops">Мережа магазинів</a>
+<a href="/home">Головна</a>
+<div th:align="center">
+    <form action="#" th:action="@{/products/add}" th:method="get" >
+        <input type="hidden" name="_method" value="get" />
+        <button type="submit" id="addButton">Add</button>
+    </form>
+</div>
+<table th:align="center">
     <thead>
     <tr>
         <th> Name </th>
@@ -28,17 +32,18 @@
         <td><span th:text="${product.getPrice()}"> Price </span></td>
         <!--/*@thymesVar id="product" type="com.test_task.entity.Product"*/-->
         <td>
-            <form action="#" th:action="@{'/shop/edit/' + ${product.id}}" th:method="get" >
+            <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{'/products/edit/' + ${product.getId()}}" th:method="get" >
                 <input type="hidden" name="_method" value="get" />
                 <button type="submit" id="editButton">Edit</button>
             </form>
         </td>
         <td>
-            <form action="#" th:action="@{'/shop/delete/' + ${product.id}}" th:method="delete" >
+            <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{'/products/delete/' + ${product.getId()}}" th:method="delete" >
                 <input type="hidden" name="_method" value="delete" />
                 <button type="submit" id="deleteButton">Delete</button>
             </form>
         </td>
+        <td>
     </tr>
     </tbody>
 </table>

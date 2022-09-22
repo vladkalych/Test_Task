@@ -1,40 +1,51 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <title>Мережа магазинів</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<form action="#" th:action="@{/stores/add}" th:method="get" >
-    <input type="hidden" name="_method" value="get" />
-    <button type="submit" id="addButton">Add</button>
-</form>
-<table>
+<a href="/home">На головну</a>
+<div th:align="center">
+    <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{/chain/add}" th:method="get">
+        <input type="hidden" name="_method" value="get"/>
+        <button align="center" type="submit" id="addButton">Add</button>
+    </form>
+</div>
+<table th:align="center">
     <thead>
     <tr>
-        <th> Name </th>
-        <th> Address </th>
+        <th> Name</th>
+        <th> Address</th>
     </tr>
     </thead>
     <tbody>
-    <!--/*@thymesVar id="stores" type="java.util.List<com.test_task.entity.Store>"*/-->
-    <tr th:if="${stores.isEmpty()}">
-        <td colspan="2"> No stores Available </td>
+    <!--/*@thymesVar id="shops" type="java.util.List<com.test_task.entity.Shop>"*/-->
+    <tr th:if="${shops.isEmpty()}">
+        <td colspan="2"> No shops Available</td>
     </tr>
-    <tr th:each="store : ${stores}">
-        <td><span th:text="${store.getName()}"> Name </span></td>
-        <td><span th:text="${store.getAddress()}"> Address </span></td>
-        <!--/*@thymesVar id="store" type="com.test_task.entity.Store"*/-->
+    <tr th:each="shop : ${shops}">
+        <td><span th:text="${shop.getName()}"> Name </span></td>
+        <td><span th:text="${shop.getAddress()}"> Address </span></td>
+        <!--/*@thymesVar id="shop" type="com.test_task.entity.Shop"*/-->
         <td>
-            <form action="#" th:action="@{'/stores/edit/' + ${store.id}}" th:method="get" >
-                <input type="hidden" name="_method" value="get" />
+            <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{'/chain/edit/' + ${shop.id}}"
+                  th:method="get">
+                <input type="hidden" name="_method" value="get"/>
                 <button type="submit" id="editButton">Edit</button>
             </form>
         </td>
         <td>
-            <form action="#" th:action="@{'/stores/delete/' + ${store.id}}" th:method="delete" >
-                <input type="hidden" name="_method" value="delete" />
+            <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{'/chain/delete/' + ${shop.id}}"
+                  th:method="delete">
+                <input type="hidden" name="_method" value="delete"/>
                 <button type="submit" id="deleteButton">Delete</button>
+            </form>
+        </td>
+        <td>
+            <form action="#" th:action="@{'/products/shop/' + ${shop.id}}" th:method="get">
+                <input type="hidden" name="_method" value="delete"/>
+                <button type="submit" id="selectShop">Select</button>
             </form>
         </td>
     </tr>

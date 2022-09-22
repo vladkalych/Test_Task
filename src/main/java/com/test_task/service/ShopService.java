@@ -1,7 +1,7 @@
 package com.test_task.service;
 
 import com.test_task.entity.Shop;
-import com.test_task.repository.StoreRepository;
+import com.test_task.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,52 +11,41 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StoreService implements IService<Shop>{
+public class ShopService implements IService<Shop>{
 
     @PersistenceContext
     private EntityManager em;
 
     @Autowired
-    private StoreRepository storeRepository;
+    private ShopRepository shopRepository;
 
     @Override
-    public boolean save(Shop shop) {
-        Shop shopFromDB = storeRepository.findStoreByName(shop.getName());
-
-        if (shopFromDB != null) {
-            return false;
-        }
-
-        storeRepository.save(shop);
-        return true;
+    public void save(Shop shop) {
+        shopRepository.save(shop);
     }
 
     @Override
-    public boolean deleteById(Long id) {
-        if (storeRepository.findById(id).isPresent()) {
-            storeRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteById(Long id) {
+        shopRepository.deleteById(id);
     }
 
     @Override
-    public boolean edit(Shop shop) {
-        if(!deleteById(shop.getId())){
-            return false;
-        }
+    public void edit(Shop shop) {
         save(shop);
-        return true;
     }
 
     @Override
     public List<Shop> findAll() {
-        return storeRepository.findAll();
+        return shopRepository.findAll();
     }
 
     @Override
     public Shop findById(Long id) {
-        Optional<Shop> userFromDb = storeRepository.findById(id);
+        Optional<Shop> userFromDb = shopRepository.findById(id);
         return userFromDb.orElse(new Shop());
+    }
+
+    public Shop findByName(String name){
+        return shopRepository.findShopByName(name);
     }
 }

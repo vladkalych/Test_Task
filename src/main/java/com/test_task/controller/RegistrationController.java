@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 
 @Controller
-public class Registration {
+public class RegistrationController {
 
     @Autowired
     private UserService userService;
@@ -29,12 +29,9 @@ public class Registration {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-        if (!userService.saveUser(user)){
-            model.addAttribute("usernameError", "Користувач вже існує");
-            return "registration";
-        }
 
-        return "home";
+        userService.save(user);
+        return "login";
     }
 
 

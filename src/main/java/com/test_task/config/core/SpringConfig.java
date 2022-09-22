@@ -1,2 +1,8 @@
-package com.test_task.config.core;public class SpringConfig {
+package com.test_task.config.core;
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SpringConfig {
+
 }
