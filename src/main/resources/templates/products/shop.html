@@ -22,23 +22,23 @@
     </tr>
     </thead>
     <tbody>
-    <!--/*@thymesVar id="products" type="java.util.List<com.test_task.entity.Product>"*/-->
-    <tr th:if="${products.isEmpty()}">
+    <!--/*@thymesVar id="productDtoList" type="java.util.List<com.test_task.dto.ProductDto>"*/-->
+    <tr th:if="${productDtoList.isEmpty()}">
         <td colspan="2"> No shops Available </td>
     </tr>
-    <tr th:each="product : ${products}">
-        <td><span th:text="${product.getName()}"> Name </span></td>
-        <td><span th:text="${product.getDescription()}"> Address </span></td>
-        <td><span th:text="${product.getPrice()}"> Price </span></td>
-        <!--/*@thymesVar id="product" type="com.test_task.entity.Product"*/-->
+    <tr th:each="productDto : ${productDtoList}">
+        <td><span th:text="${productDto.getName()}"> Name </span></td>
+        <td><span th:text="${productDto.getDescription()}"> Address </span></td>
+        <td><span th:text="${productDto.getPrice()}"> Price </span></td>
+        <!--/*@thymesVar id="productDto" type="com.test_task.entity.Product"*/-->
         <td>
-            <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{'/products/edit/' + ${product.getId()}}" th:method="get" >
+            <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{'/products/edit/' + ${productDto.getId()}}" th:method="get" >
                 <input type="hidden" name="_method" value="get" />
                 <button type="submit" id="editButton">Edit</button>
             </form>
         </td>
         <td>
-            <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{'/products/delete/' + ${product.getId()}}" th:method="delete" >
+            <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{'/products/delete/' + ${productDto.getId()}}" th:method="delete" >
                 <input type="hidden" name="_method" value="delete" />
                 <button type="submit" id="deleteButton">Delete</button>
             </form>

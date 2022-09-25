@@ -5,8 +5,8 @@
   <title>Add</title>
 </head>
 <body>
-<!--/*@thymesVar id="product" type="com.test_task.entity.Product"*/-->
-<form action="#" th:action="@{'/products/edit/' + ${product.getId()}}" th:object="${product}" th:method="patch">
+<!--/*@thymesVar id="productDto" type="com.test_task.dto.ProductDto"*/-->
+<form action="#" th:action="@{'/products/edit/' + ${productDto.getId()}}" th:object="${productDto}" th:method="patch">
   <fieldset>
     <button type="submit" id="submitButton"> Save</button>
     <button type="reset" id="resetButton"> Reset</button>

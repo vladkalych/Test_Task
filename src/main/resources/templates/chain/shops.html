@@ -20,30 +20,30 @@
     </tr>
     </thead>
     <tbody>
-    <!--/*@thymesVar id="shops" type="java.util.List<com.test_task.entity.Shop>"*/-->
-    <tr th:if="${shops.isEmpty()}">
+    <!--/*@thymesVar id="shopDtoList" type="java.util.List<com.test_task.dto.ShopDto>"*/-->
+    <tr th:if="${shopDtoList.isEmpty()}">
         <td colspan="2"> No shops Available</td>
     </tr>
-    <tr th:each="shop : ${shops}">
-        <td><span th:text="${shop.getName()}"> Name </span></td>
-        <td><span th:text="${shop.getAddress()}"> Address </span></td>
-        <!--/*@thymesVar id="shop" type="com.test_task.entity.Shop"*/-->
+    <tr th:each="shopDto : ${shopDtoList}">
+        <td><span th:text="${shopDto.getName()}"> Name </span></td>
+        <td><span th:text="${shopDto.getAddress()}"> Address </span></td>
+        <!--/*@thymesVar id="shopDto" type="com.test_task.dto.ShopDto"*/-->
         <td>
-            <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{'/chain/edit/' + ${shop.id}}"
+            <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{'/chain/edit/' + ${shopDto.id}}"
                   th:method="get">
                 <input type="hidden" name="_method" value="get"/>
                 <button type="submit" id="editButton">Edit</button>
             </form>
         </td>
         <td>
-            <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{'/chain/delete/' + ${shop.id}}"
+            <form sec:authorize="hasRole('ADMIN')" action="#" th:action="@{'/chain/delete/' + ${shopDto.id}}"
                   th:method="delete">
                 <input type="hidden" name="_method" value="delete"/>
                 <button type="submit" id="deleteButton">Delete</button>
             </form>
         </td>
         <td>
-            <form action="#" th:action="@{'/products/shop/' + ${shop.id}}" th:method="get">
+            <form action="#" th:action="@{'/products/shop/' + ${shopDto.id}}" th:method="get">
                 <input type="hidden" name="_method" value="delete"/>
                 <button type="submit" id="selectShop">Select</button>
             </form>

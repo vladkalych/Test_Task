@@ -40,8 +40,7 @@ public class UserService implements UserDetailsService, IService<User> {
 
     @Override
     public void save(User user) {
-        user.setRoles(Collections.singleton(roleRepository.findRoleById(1l)));
-//        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+        user.setRoles(Collections.singleton(roleRepository.findRoleById(1L)));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }

@@ -1,6 +1,6 @@
 package com.test_task.controller;
 
-import com.test_task.entity.User;
+import com.test_task.dto.UserDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,13 +10,13 @@ public class LoginController {
 
     @GetMapping()
     public String about(Model model){
-        model.addAttribute("user", new User());
+        model.addAttribute("userDto", new UserDto());
         return "login";
     }
 
     @GetMapping("/login")
     public String login(Model model){
-        model.addAttribute("user", new User());
+        model.addAttribute("userDto", new UserDto());
         return "login";
     }
 

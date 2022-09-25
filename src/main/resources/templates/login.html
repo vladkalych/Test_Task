@@ -38,8 +38,8 @@
 <div class="limiter">
 
 			<div th:marginwidth="200">
-				<!--/*@thymesVar id="user" type="com.test_task.entity.User"*/-->
-				<form th:method="POST" th:action="@{/login}" th:object="${user}">
+				<!--/*@thymesVar id="userDto" type="com.test_task.dto.UserDto"*/-->
+				<form th:method="POST" th:action="@{/login}" th:object="${userDto}">
 					<div >
 						<input type="text" name="username" th:field="*{username}">
 						<span data-placeholder="Username"></span>

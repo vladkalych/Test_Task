@@ -1,6 +1,8 @@
 package com.test_task.controller;
 
+import com.test_task.dto.UserDto;
 import com.test_task.entity.User;
+import com.test_task.mapper.UserMapper;
 import com.test_task.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,16 +22,17 @@ public class RegistrationController {
 
     @GetMapping("/registration")
     public String registration(Model model){
-        model.addAttribute("user", new User());
+        model.addAttribute("userDto", new UserDto());
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model) {
+    public String addUser(@ModelAttribute("userDto") @Valid UserDto userDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
 
+        User user = UserMapper.INSTANCE.toUser(userDto);
         userService.save(user);
         return "login";
     }

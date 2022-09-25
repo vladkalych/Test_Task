@@ -7,8 +7,8 @@
     </style>
 </head>
 <body>
-<!--/*@thymesVar id="shop" type="com.test_task.entity.Shop"*/-->
-<form action="#" th:action="@{'/chain/edit/' + ${shop.getId()}}" th:object="${shop}" th:method="patch">
+<!--/*@thymesVar id="shopDto" type="com.test_task.dto.ShopDto"*/-->
+<form action="#" th:action="@{'/chain/edit/' + ${shopDto.getId()}}" th:object="${shopDto}" th:method="patch">
     <fieldset>
         <button type="submit" id="submitButton"> Save</button>
         <button type="reset" id="resetButton"> Reset</button>
