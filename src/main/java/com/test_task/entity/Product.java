@@ -38,7 +38,7 @@ public class Product {
 
     @Getter
     @Setter
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     private Shop shop;
 
 

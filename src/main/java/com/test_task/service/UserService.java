@@ -18,6 +18,7 @@ import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService, IService<User> {
+
     @PersistenceContext
     private EntityManager em;
     @Autowired

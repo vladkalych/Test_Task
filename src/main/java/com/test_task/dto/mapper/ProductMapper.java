@@ -1,4 +1,4 @@
-package com.test_task.mapper;
+package com.test_task.dto.mapper;
 
 import com.test_task.dto.ProductDto;
 import com.test_task.entity.Product;
