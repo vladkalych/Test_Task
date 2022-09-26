@@ -1,4 +1,4 @@
-package com.test_task.dto.mapper;
+package com.test_task.mapper;
 
 import com.test_task.dto.UserDto;
 import com.test_task.entity.User;

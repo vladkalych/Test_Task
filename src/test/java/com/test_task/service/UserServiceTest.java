@@ -1,75 +1,115 @@
 package com.test_task.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+
+import com.test_task.entity.Role;
 import com.test_task.entity.User;
+import com.test_task.repository.RoleRepository;
 import com.test_task.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
+  private static final String MOCK_USERNAME = "admin";
+  private static final String MOCK_NON_EXISTENT_NAME = "junit_user";
+  private static final String MOCK_PASSWORD = "1234567890";
+  private static final long MOCK_ID = 77;
+  @InjectMocks private UserService userService;
+  @Mock private UserRepository userRepository;
+  @Mock private RoleRepository roleRepository;
+  @Mock private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @MockBean
-    UserService userService;
+  @Test
+  void loadUserByUsername() {
+    User user = new User(MOCK_USERNAME, MOCK_PASSWORD);
 
-    @Mock
-    UserRepository userRepository;
+    when(userRepository.findByUsername(MOCK_USERNAME)).thenReturn(user);
 
+    assertDoesNotThrow(() -> userService.loadUserByUsername(MOCK_USERNAME));
+  }
 
-    @Test
-    void loadUserByUsername() {
-        final String nonExistentName = "junit_user";
-        final String existentName = "admin";
-        final String password = "1234567890";
+  @Test
+  void save() {
+    User user = new User(MOCK_USERNAME, MOCK_PASSWORD);
 
-        User user = new User(existentName, password);
-        userService.save(user);
+    when(userRepository.save(user)).thenReturn(user);
+    when(roleRepository.findRoleById(1L)).thenReturn(new Role(1L, "Role 1"));
+    when(bCryptPasswordEncoder.encode(user.getPassword())).thenReturn(user.getPassword());
 
-        assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername(nonExistentName));
-        assertDoesNotThrow(() -> userService.loadUserByUsername(existentName));
-    }
+    assertDoesNotThrow(() -> userService.save(user));
+  }
 
-    @Test
-    void save() {
-        final String usernameAndPassword = "junit_test_save";
+  @Test
+  void deleteById() {
+    User user = new User(MOCK_USERNAME, MOCK_PASSWORD);
+    user.setId(MOCK_ID);
+    doNothing().when(userRepository).deleteById(MOCK_ID);
 
-        User user = new User(usernameAndPassword, usernameAndPassword);
-        userService.save(user);
+    userService.deleteById(MOCK_ID);
 
-        UserDetails userDetails = userService.loadUserByUsername(usernameAndPassword);
-        userDetails.getUsername();
-        assertEquals(usernameAndPassword, userDetails.getUsername());
-    }
+    assertDoesNotThrow(() -> userService.deleteById(MOCK_ID));
+  }
 
-    @Test
-    void deleteById() {
-        UserDetails junit_test = userService.loadUserByUsername("junit_test");
-        assertNotNull(junit_test);
-        //userService.deleteById();
-        assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername("junit_test"));
-    }
+  @Test
+  void deleteByIdWithException() {
+    doThrow(UsernameNotFoundException.class).when(userRepository).deleteById(MOCK_ID);
 
-    @Test
-    void edit() {
+    assertThrows(UsernameNotFoundException.class, () -> userService.deleteById(MOCK_ID));
+  }
 
-    }
+  @Test
+  void edit() {
+    User user = new User(MOCK_USERNAME, MOCK_PASSWORD);
 
-    @Test
-    void findAll() {
-    }
+    when(userRepository.save(user)).thenReturn(user);
+    when(roleRepository.findRoleById(1L)).thenReturn(new Role(1L, "Role 1"));
+    when(bCryptPasswordEncoder.encode(user.getPassword())).thenReturn(user.getPassword());
 
-    @Test
-    void findById() {
-    }
+    assertDoesNotThrow(() -> userService.edit(user));
+  }
 
-    @Test
-    void findByUsername() {
-    }
+  @Test
+  void findAll() {
+    User user = new User(MOCK_USERNAME, MOCK_PASSWORD);
+    List<User> users = new ArrayList<>();
+    users.add(user);
+    when(userRepository.findAll()).thenReturn(users);
+
+    List<User> actualUsers = userService.findAll();
+
+    assertEquals(users.size(), actualUsers.size());
+  }
+
+  @Test
+  void findById() {
+    User expectedUser = new User(MOCK_USERNAME, MOCK_PASSWORD);
+    expectedUser.setId(MOCK_ID);
+    when(userRepository.findById(MOCK_ID)).thenReturn(Optional.of(expectedUser));
+
+    User actualUser = userService.findById(MOCK_ID);
+
+    assertEquals(expectedUser.getId(), actualUser.getId());
+  }
+
+  @Test
+  void findByUsername() {
+    User expectedUser = new User(MOCK_USERNAME, MOCK_PASSWORD);
+    when(userRepository.findByUsername(MOCK_USERNAME)).thenReturn(expectedUser);
+
+    User actualUser = userService.findByUsername(expectedUser);
+
+    assertEquals(expectedUser.getUsername(), actualUser.getUsername());
+  }
 }

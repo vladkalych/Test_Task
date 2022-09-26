@@ -13,16 +13,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ErrorControllerTest {
+class LoginControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
     @Test
-    void accessDenied() throws Exception {
+    void about() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/accessDenied")
-                .accept(MediaType.APPLICATION_JSON))
+                        .get("/")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().is(302));
+    }
+
+    @Test
+    void login() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/login")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }

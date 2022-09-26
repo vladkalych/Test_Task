@@ -2,7 +2,7 @@ package com.test_task.controller;
 
 import com.test_task.dto.ShopDto;
 import com.test_task.entity.Shop;
-import com.test_task.dto.mapper.ShopMapper;
+import com.test_task.mapper.ShopMapper;
 import com.test_task.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

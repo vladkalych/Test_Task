@@ -2,7 +2,7 @@ package com.test_task.controller;
 
 import com.test_task.dto.UserDto;
 import com.test_task.entity.User;
-import com.test_task.dto.mapper.UserMapper;
+import com.test_task.mapper.UserMapper;
 import com.test_task.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
