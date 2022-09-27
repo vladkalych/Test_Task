@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class RoleRepositoryTest {
+    private final String ROLE = "USER";
 
     @Autowired
     RoleRepository roleRepository;
@@ -25,7 +26,7 @@ class RoleRepositoryTest {
 
         Role role = new Role();
         role.setId(1L);
-        role.setName("USER");
+        role.setName(ROLE);
         role.setUsers(Set.of(user));
 
         roleRepository.save(role);
@@ -34,8 +35,7 @@ class RoleRepositoryTest {
 
     @Test
     void findRoleById() {
-        final String trueRoleName = "USER";
         Role roleById = roleRepository.findRoleById(1L);
-        assertEquals(trueRoleName, roleById.getName());
+        assertEquals(ROLE, roleById.getName());
     }
 }

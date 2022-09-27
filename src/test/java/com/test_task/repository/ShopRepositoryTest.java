@@ -14,6 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 class ShopRepositoryTest {
 
+    private final String SHOP_NAME = "TEST_SHOP";
+    private final String SHOP_ADDRESS = "1234567890qwertyuiopasdfghjklzxcvbnm";
+
     @Autowired
     ShopRepository shopRepository;
 
@@ -26,8 +29,8 @@ class ShopRepositoryTest {
         product.setPrice(20d);
 
         Shop shop = new Shop();
-        shop.setName("TEST_SHOP");
-        shop.setAddress("1234567890qwertyuiopasdfghjklzxcvbnm");
+        shop.setName(SHOP_NAME);
+        shop.setAddress(SHOP_ADDRESS);
         shop.setProducts(Set.of(product));
 
         shopRepository.save(shop);
@@ -35,8 +38,7 @@ class ShopRepositoryTest {
 
     @Test
     void findShopByName() {
-        final String trueAddress = "1234567890qwertyuiopasdfghjklzxcvbnm";
-        Shop shop = shopRepository.findShopByName("TEST_SHOP");
-        assertEquals(trueAddress, shop.getAddress());
+        Shop shop = shopRepository.findShopByName(SHOP_NAME);
+        assertEquals(SHOP_ADDRESS, shop.getAddress());
     }
 }

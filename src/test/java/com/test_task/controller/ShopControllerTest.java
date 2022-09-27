@@ -10,16 +10,15 @@ import com.test_task.repository.ProductRepository;
 import com.test_task.repository.ShopRepository;
 import com.test_task.service.ProductService;
 import com.test_task.service.ShopService;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.Set;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -28,13 +27,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ShopControllerTest {
 
     private final String SHOP_NAME = "TEST_SHOP_1";
-    private final String SHOP_ADDRESS = "1234567890qwertyuiopasdfghjklzxcvbnm";
     private final String PRODUCT_NAME = "PRODUCT_TEST_1";
     private final String PRODUCT_DESCRIPTION = "MNBVCXZLKJHGFDSAPOIUYTREWQ";
-    private final Double PRODUCT_PRICE = 300d;
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,27 +42,28 @@ class ShopControllerTest {
 
     @Autowired
     private ProductRepository productRepository;
-
-
     private Long shopId;
 
     @BeforeEach
-    void init() throws Exception {
+    void init(){
+        Shop shop = shopRepository.findShopByName(SHOP_NAME);
+        if (shop == null){
+            return;
+        }
+        shopId = shop.getId();
+    }
+
+    @Test
+    @Order(1)
+    void shop() throws Exception {
         ShopDto shopDto = new ShopDto();
         shopDto.setName(SHOP_NAME);
+        String SHOP_ADDRESS = "1234567890qwertyuiopasdfghjklzxcvbnm";
         shopDto.setAddress(SHOP_ADDRESS);
         Shop shop = ShopMapper.INSTANCE.toShop(shopDto);
         shopRepository.save(shop);
         shopId = shopRepository.findShopByName(SHOP_NAME).getId();
-    }
 
-    @AfterEach
-    void destroy(){
-        shopRepository.deleteById(shopId);
-    }
-
-    @Test
-    void shop() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/products/shop/{id}", shopId).with(user("admin").password("user11").roles("USER", "ADMIN"))
                         .accept(MediaType.APPLICATION_JSON))
@@ -74,6 +73,7 @@ class ShopControllerTest {
     }
 
     @Test
+    @Order(2)
     void getAddForm() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/products/add/").with(user("admin").password("user11").roles("USER", "ADMIN"))
@@ -84,10 +84,12 @@ class ShopControllerTest {
     }
 
     @Test
+    @Order(3)
     void addProduct() throws Exception {
         ProductDto productDto = new ProductDto();
         productDto.setName(PRODUCT_NAME);
         productDto.setDescription(PRODUCT_DESCRIPTION);
+        Double PRODUCT_PRICE = 300d;
         productDto.setPrice(PRODUCT_PRICE);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -108,6 +110,7 @@ class ShopControllerTest {
     }
 
     @Test
+    @Order(4)
     void getEditForm() throws Exception {
         Product product = productRepository.findProductByName(PRODUCT_NAME);
 
@@ -120,6 +123,7 @@ class ShopControllerTest {
     }
 
     @Test
+    @Order(5)
     void editProduct() throws Exception {
         Product product = productRepository.findProductByName(PRODUCT_NAME);
 
@@ -146,6 +150,7 @@ class ShopControllerTest {
     }
 
     @Test
+    @Order(6)
     void deleteProduct() throws Exception {
         Product product = productRepository.findProductByName(PRODUCT_NAME);
 

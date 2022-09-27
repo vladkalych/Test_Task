@@ -2,8 +2,6 @@ package com.test_task.repository;
 
 import com.test_task.entity.Product;
 import com.test_task.entity.Shop;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class ProductRepositoryTest {
+    private final String PRODUCT_NAME_A = "TEST_PRODUCT";
+    private final String PRODUCT_DESCRIPTION_A = "qwertyuiopasdfghjklzxcvbnm";
+    private final String PRODUCT_DESCRIPTION_B = "mnbvcxzlkjhgfdsapoiuytrewq";
+
+
 
     @Autowired
     ProductRepository productRepository;
@@ -27,13 +30,13 @@ class ProductRepositoryTest {
         shop.setAddress("qwertyuiopasdfghjklzxcvbnm");
 
         Product product = new Product();
-        product.setName("TEST_PRODUCT");
-        product.setDescription("qwertyuiopasdfghjklzxcvbnm");
+        product.setName(PRODUCT_NAME_A);
+        product.setDescription(PRODUCT_DESCRIPTION_A);
         product.setShop(shop);
 
         Product product_1 = new Product();
         product_1.setName("TEST_PRODUCT_1");
-        product_1.setDescription("mnbvcxzlkjhgfdsapoiuytrewq");
+        product_1.setDescription(PRODUCT_DESCRIPTION_B);
         product_1.setShop(shop);
 
         shop.setProducts(Set.of(product, product_1));
@@ -44,21 +47,17 @@ class ProductRepositoryTest {
 
     @Test
     void findProductByName() {
-        final String trueDescription = "qwertyuiopasdfghjklzxcvbnm";
-        Product test_product = productRepository.findProductByName("TEST_PRODUCT");
-        assertEquals(test_product.getDescription(), trueDescription);
+        Product test_product = productRepository.findProductByName(PRODUCT_NAME_A);
+        assertEquals(test_product.getDescription(), PRODUCT_DESCRIPTION_A);
     }
 
     @Test
     void findAllByShopId() {
-        final String descriptionFirst = "qwertyuiopasdfghjklzxcvbnm";
-        final String descriptionSecond = "mnbvcxzlkjhgfdsapoiuytrewq";
-
         List<Product> productList = productRepository.findAllByShopId(1L);
-        Product product = productList.get(0);
-        Product product_1 = productList.get(1);
+        Product actualProductA = productList.get(0);
+        Product actualProductB = productList.get(1);
 
-        assertEquals(product.getDescription(), descriptionFirst);
-        assertEquals(product_1.getDescription(), descriptionSecond);
+        assertEquals(PRODUCT_DESCRIPTION_A, actualProductA.getDescription());
+        assertEquals(PRODUCT_DESCRIPTION_B, actualProductB.getDescription());
     }
 }
